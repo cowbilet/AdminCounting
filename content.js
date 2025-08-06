@@ -66,7 +66,7 @@ if (window.location.hostname === "sjc.stjohnvic.com.au" && /^\/members\/list/.te
 }
 if (window.location.hostname === "sjc.stjohnvic.com.au" && /^\/members\/\d+\/hours/.test(window.location.pathname)) {
     window.addEventListener('load', async () => {
-        const age = getAgeFromUrl();
+        let age = getAgeFromUrl();
         const memberId = window.location.pathname.match(/\/members\/(\d+)\/hours/)[1];
         const { startDate, endDate } = getDateRangeFromUrl();
         const totalHours = await fetchAndParseMemberTotalHours(memberId, startDate, endDate, age);
@@ -90,6 +90,7 @@ if (window.location.hostname === "sjc.stjohnvic.com.au" && /^\/members\/\d+\/hou
             const ageInput = document.createElement('input');
             ageInput.type = "number";
             ageInput.min = "1";
+            ageInput.id = "ageInput";
             ageInput.max = "99";
             ageInput.value = getAgeFromUrl();
             ageInput.className = "form-control input-sm";
@@ -174,13 +175,13 @@ if (window.location.hostname === "sjc.stjohnvic.com.au" && /^\/members\/\d+\/hou
             // When year is selected, update start/end date inputs to 01/01/YYYY and 31/12/YYYY
             yearSelect.addEventListener('change', () => {
                 const selectedYear = parseInt(yearSelect.value, 10);
+                const ageInput = document.querySelector('#ageInput');
                 startDateInput.value = `01/01/${selectedYear}`;
                 endDateInput.value = `31/12/${selectedYear}`;
+                const newUrl = `https://sjc.stjohnvic.com.au/members/${memberId}/hours?start_date=${startDateInput.value}&end_date=${endDateInput.value}&age=${ageInput.value}`;
+                window.location.href = newUrl;
             });
-            // Submit the form when year is selected
-            yearSelect.addEventListener('change', () => {
-                form.submit();
-            });
+
         }
 
         // Display total time in the Events Attended box header
