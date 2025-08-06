@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "Hours Helper",
+    "version": "1.0",
+    "description": "A Chrome extension to help manage admin hours.",
+    "permissions": [
+        "tabs",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://sjc.stjohnvic.com.au/members/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["https://sjc.stjohnvic.com.au/members/*"],
+            "js": ["fetching.js", "content.js"]
+        }
+    ]
+}
